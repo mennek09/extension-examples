@@ -1,26 +1,4 @@
-/*
- * The MIT License (MIT)
- *
- * Copyright (c) 2021 Looker Data Sciences, Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
+
 
 import React, {
   useCallback,
@@ -36,11 +14,12 @@ import {
   Page,
   Aside,
   Section,
-  MessageBar,
-  Box,
+  MenuItem,
+  MenuList,
+  MenuHeading,
+  Grid,
   SpaceVertical,
-  FieldToggleSwitch,
-  Space,
+  Paragraph,
 } from '@looker/components'
 import { ExtensionContext2 } from '@looker/extension-sdk-react'
 import { LookerEmbedSDK } from '@looker/embed-sdk'
@@ -50,11 +29,14 @@ import {
   useListenEmbedEvents,
   useAllDashboards,
 } from '../../hooks'
-import { Search } from '../Search'
 import { EmbedContainer } from '../EmbedContainer'
-import { EmbedEvents } from '../EmbedEvents'
 
-export const DashboardEmbedNext = ({ embedType }, { idDashboardMM }) => {
+
+import { CrossFilter, DashboardGauge, ColorText, VisLine, Refresh } from '@looker/icons'
+
+import { DashboardFilter } from '@looker/filter-components'
+
+export const DashboardEmbedNext = ({ embedType }) => {
   const [cancelEvents, setCancelEvents] = useState(true)
   const cancelEventsRef = useRef()
   cancelEventsRef.current = cancelEvents
@@ -76,8 +58,8 @@ export const DashboardEmbedNext = ({ embedType }, { idDashboardMM }) => {
   useEffect(() => {
     if (dashboardId && dashboardId !== embedId) {
       if (dashboard) {
+
         updateEmbedId(dashboardId)
-        console.log(idDashboardMM)
         dashboard.loadDashboard(dashboardId)
         setMessage(undefined)
       }
@@ -106,7 +88,7 @@ export const DashboardEmbedNext = ({ embedType }, { idDashboardMM }) => {
           setDashboardId(embedId)
           initialId = embedId
         } else {
-          initialId = 'preload'
+          initialId = '230'
         }
         LookerEmbedSDK.init(hostUrl)
         const embed = LookerEmbedSDK.createDashboardWithId(initialId)
@@ -119,8 +101,8 @@ export const DashboardEmbedNext = ({ embedType }, { idDashboardMM }) => {
           .on('dashboard:tile:explore', maybeCancel)
           .on('dashboard:tile:view', maybeCancel)
         listenEmbedEvents(embed)
-        if (initialId === 'preload') {
-          embed.on('page:changed', updateRunButton.bind(null, false))
+        if (initialId === '230') {
+          embed.on('page', updateRunButton.bind(null, false))
         }
         embed
           .build()
@@ -146,49 +128,116 @@ export const DashboardEmbedNext = ({ embedType }, { idDashboardMM }) => {
 
   const runDashboard = () => {
     if (dashboard) {
-      // setDashboardId(230)
-      // isLoading
+
       console.log(dashboardId)
       dashboard.run()
     }
   }
 
+  // const setupDashboard = (dashboard) => {
+  //   // Add a listener to the "Run All" button and send a 'dashboard:run' message when clicked
+  //   const runAllButton = document.querySelector('#run-all')
+  //   if (runAllButton) {
+  //     runAllButton.addEventListener('click', () => dashboard.run())
+  //   }
+
+  //   // Add a listener to the dashboard's "Run" button and send a 'dashboard:run' message when clicked
+  //   const runButton = document.querySelector('#run-dashboard')
+  //   if (runButton) {
+  //     runButton.addEventListener('click', () => dashboard.run())
+  //   }
+
+  //   // Add a listener to the dashboard's "Stop" button and send a 'dashboard:stop' message when clicked
+  //   const stopButton = document.querySelector('#stop-dashboard')
+  //   if (stopButton) {
+  //     stopButton.addEventListener('click', () => dashboard.stop())
+  //   }
+
+  //   // Add a listener to the state selector and update the dashboard filters when changed
+  //   const stateFilter = document.querySelector('#state')
+  //   if (stateFilter) {
+  //     stateFilter.addEventListener('change', (event) => {
+  //       dashboard.updateFilters({
+  //         'State / Region': (event.target as HTMLSelectElement).value,
+  //       })
+  //     })
+  //   }
+  // }
+
+  const [expression, setExpression] = useState('[0,100]')
+
+  // const componentDidMount() => {
+  //   setInterval(() => {
+  //     this.setState({
+  //       curTime: new Date().toLocaleString()
+  //     })
+  //   }, 1000)
+  // }
+
+
   return (
-    <Page height="100%">
-      <Layout hasAside height="100%">
-        <Section height="100%" px="small">
-          <>
-            {message && <MessageBar intent="critical">{message}</MessageBar>}
-            <Box py="5px">
-              <Space>
-                <Button
-                  onClick={console.idDashboardMM}
-                // disabled={!dashboardId || running}
-                >
-                  Ja moin2
-                </Button>
-              </Space>
-            </Box>
-            <EmbedContainer ref={embedCtrRef} />
-          </>
-        </Section>
-        <Aside width="25%" height="100%" pr="small">
-          <SpaceVertical height="100%">
-            <Search
-              onSelected={onSelected}
-              loading={isLoading}
-              error={error}
-              data={results}
-              embedRunning={running}
-              embedType={embedType}
-            />
-          </SpaceVertical>
+    <Page height="100%%">
+      <Layout hasAside height='100%' >
+        <Aside height="100%" width="12rem">
+          <MenuList height="100%">
+
+            <MenuHeading text-allign="center">Dashboards</MenuHeading>
+
+            <MenuItem onClick={() => onSelected('230')} icon={<CrossFilter />}> Overview</MenuItem>
+            <MenuItem onClick={() => onSelected('232')} icon={<ColorText />}> Warranty</MenuItem>
+            <MenuItem onClick={() => onSelected('231')} icon={<VisLine />}>Safety</MenuItem>
+            <MenuItem onClick={() => onSelected('233')} icon={<DashboardGauge />}>System check</MenuItem>
+            <Button
+              onClick={runDashboard}
+              disabled={!dashboardId || running}
+              color="key"
+            >
+              Reload
+            </Button>
+            <div>Last action:  {Date().toLocaleString()}</div>
+          </MenuList>
+          <div position="absolute" ><heading2>User:</heading2><text>ACCURE-EVE</text></div>
         </Aside>
+
+        <Section height="100%">
+          <Grid columns="2">
+            <SpaceVertical>
+              <DashboardFilter
+                filter={{
+                  field: { is_numeric: true },
+                  id: 1,
+                  name: 'Age',
+                  type: 'field_filter',
+                }}
+                expression={expression}
+                onChange={setExpression}
+              />
+              <Paragraph>
+                <strong>Current filter expression:</strong> {expression}
+              </Paragraph>
+            </SpaceVertical>
+
+            <DashboardFilter
+              expression="34"
+              filter={{
+                field: {
+                  is_numeric: true
+                },
+                name: 'id filter',
+                type: 'field_filter'
+              }}
+              onChange={function noRefCheck() { }}
+            />
+          </Grid>
+          <EmbedContainer ref={embedCtrRef} />
+        </Section>
+
       </Layout>
-    </Page>
+    </Page >
   )
 }
 
 DashboardEmbedNext.propTypes = {
   embedType: PropTypes.string.isRequired,
+  // idDashboardMM: PropTypes.string.isRequired,
 }

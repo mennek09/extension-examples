@@ -54,26 +54,9 @@ export const DemoEmbeds = () => {
   return (
     <ComponentsProvider>
       <View>
-        <Page hasAside>
-          <Aside width="12rem">
-            <Panels>
-              <MenuList {...tabs} width="12rem">
-                <MenuItem onClick={() => alert('Ja moin!')} icon={<CrossFilter />}> Tach och</MenuItem>
-                <MenuItem onClick={() => alert('Hello world!')} icon={<ColorText />}> Warranty</MenuItem>
-                <MenuItem onClick={() => alert('Hello world!')} icon={<VisLine />}>Safety</MenuItem>
-                <MenuItem onClick={() => alert('Hello world!')} icon={<DashboardGauge />}>System check</MenuItem>
-              </MenuList>
-            </Panels>
-          </Aside>
-          <Section>
-            <TabPanels {...tabs} pt="0">
-              <TabPanel>
-                <DashboardEmbedNext embedType={tabNames[0]} idDashboardMM={230} />
-              </TabPanel>
 
-            </TabPanels>
-          </Section>
-        </Page>
+        <DashboardEmbedNext embedType={tabNames[0]} />
+
       </View>
 
     </ComponentsProvider>
@@ -83,5 +66,5 @@ export const DemoEmbeds = () => {
 
 const View = styled.div`
         width: 100%;
-        height: calc(100vh - 50px);
+        height: 100%;
         `
