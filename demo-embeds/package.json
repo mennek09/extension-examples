@@ -1,7 +1,7 @@
 {
-  "name": "helloworld-js",
+  "name": "demo-embeds",
   "version": "0.1.0",
-  "description": "Looker Extension Hello World JavaScript Demo",
+  "description": "Looker Extension Embed Usage Demo",
   "main": "dist/bundle.js",
   "scripts": {
     "analyze": "export ANALYZE_MODE=static && yarn build",
@@ -32,6 +32,7 @@
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-is": "^16.13.1",
+    "react-query": "^3.16.0",
     "react-router-dom": "^5.1.2",
     "styled-components": "^5.2.1"
   },
@@ -86,10 +87,7 @@
     ],
     "plugins": [
       [
-        "@babel/plugin-proposal-class-properties",
-        {
-          "loose": true
-        }
+        "@babel/plugin-proposal-class-properties"
       ],
       [
         "@babel/plugin-transform-react-jsx",

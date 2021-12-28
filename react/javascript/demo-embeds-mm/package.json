@@ -1,7 +1,7 @@
 {
-  "name": "helloworld-js",
+  "name": "demo-embeds",
   "version": "0.1.0",
-  "description": "Looker Extension Hello World JavaScript Demo",
+  "description": "Looker Extension Embed Usage Demo",
   "main": "dist/bundle.js",
   "scripts": {
     "analyze": "export ANALYZE_MODE=static && yarn build",
@@ -19,7 +19,7 @@
     "node": ">=12"
   },
   "dependencies": {
-    "@looker/components": "^1.1.6",
+    "@looker/components": "^2.8.11",
     "@looker/embed-sdk": "^1.6.0",
     "@looker/extension-sdk": "^21.4.5",
     "@looker/extension-sdk-react": "^21.4.5",
@@ -29,11 +29,13 @@
     "@styled-icons/material": "10.28.0",
     "@styled-icons/material-outlined": "10.28.0",
     "@styled-icons/material-rounded": "10.28.0",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
+    "lodash": "^4.17.21",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-is": "^16.13.1",
+    "react-query": "^3.16.0",
     "react-router-dom": "^5.1.2",
-    "styled-components": "^5.2.1"
+    "styled-components": "^5.3.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.10",
@@ -86,10 +88,7 @@
     ],
     "plugins": [
       [
-        "@babel/plugin-proposal-class-properties",
-        {
-          "loose": true
-        }
+        "@babel/plugin-proposal-class-properties"
       ],
       [
         "@babel/plugin-transform-react-jsx",
